@@ -2,43 +2,34 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\DokterResource\Pages;
-use App\Filament\Resources\DokterResource\RelationManagers;
-use App\Models\Dokter;
-use App\Models\Poli;
+use App\Filament\Resources\PasienResource\Pages;
+use App\Filament\Resources\PasienResource\RelationManagers;
+use App\Models\Pasien;
 use Filament\Forms;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class DokterResource extends Resource
+class PasienResource extends Resource
 {
-    protected static ?string $model = Dokter::class;
+    protected static ?string $model = Pasien::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-identification';
-
-    protected static ?string $navigationLabel = 'Dokter';
-
+    protected static ?string $navigationIcon = 'heroicon-o-users';
 
     public static function form(Form $form): Form
     {
-
-        $poli=Poli::pluck('nama_poli','id')->toArray();
         return $form
             ->schema([
                 TextInput::make('nama'),
                 TextInput::make('alamat'),
+                TextInput::make('no_ktp'),
                 TextInput::make('no_hp'),
-                Select::make('id_poli')
-                    ->label('Poli')
-                    ->options($poli)
-                    ->required(),
+                TextInput::make('no_rm'),
             ]);
     }
 
@@ -48,8 +39,9 @@ class DokterResource extends Resource
             ->columns([
                 TextColumn::make('nama'),
                 TextColumn::make('alamat'),
+                TextColumn::make('no_ktp'),
                 TextColumn::make('no_hp'),
-                TextColumn::make('poli.nama_poli'),
+                TextColumn::make('no_rm'),
             ])
             ->filters([
                 //
@@ -74,9 +66,9 @@ class DokterResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListDokters::route('/'),
-            'create' => Pages\CreateDokter::route('/create'),
-            'edit' => Pages\EditDokter::route('/{record}/edit'),
+            'index' => Pages\ListPasiens::route('/'),
+            'create' => Pages\CreatePasien::route('/create'),
+            'edit' => Pages\EditPasien::route('/{record}/edit'),
         ];
     }
 }

@@ -25,10 +25,9 @@ use PHPUnit\Event\Code\Test;
 class JadwalPeriksaResource extends Resource
 {
     protected static ?string $model = JadwalPeriksa::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
-
+    protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
     protected static ?string $navigationLabel = 'Jadwal Periksa';
+    //protected static ?int $navigationSort = 1;
 
 
     public static function form(Form $form): Form
