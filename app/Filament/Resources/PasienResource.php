@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PasienResource\Pages;
 use App\Filament\Resources\PasienResource\RelationManagers;
+use App\Models\DaftarPoli;
 use App\Models\Pasien;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -21,6 +22,9 @@ class PasienResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
+    protected static ?string $navigationLabel = 'Riwayat Pasien';
+    protected static ?int $navigationSort = 3;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -29,7 +33,7 @@ class PasienResource extends Resource
                 TextInput::make('alamat'),
                 TextInput::make('no_ktp'),
                 TextInput::make('no_hp'),
-                TextInput::make('no_rm'),
+                //TextInput::make('no_rm'),
             ]);
     }
 
@@ -47,7 +51,22 @@ class PasienResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make("Riwayat Periksa")->label("Riwayat Periksa")
+                    ->form(function (Pasien $record) {
+                        $daftarPoli = DaftarPoli::where('id_pasien', $record->id)->first();
+                        $keluhan = $daftarPoli ? $daftarPoli->keluhan : null;
+                        return [
+                            TextInput::make("Pasien")->label("Nama Pasien")
+                                ->default(fn(Pasien $record) => "{$record->nama}")
+                                ->readonly(),
+                                TextInput::make("keluhan")->label("Keluhan")
+                                ->default($keluhan)
+                                ->readonly(),
+                        ];
+                    })
+                    ->hidden(function (Pasien $record) {
+                        return !DaftarPoli::where('id_pasien', $record->id)->exists();
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

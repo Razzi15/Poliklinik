@@ -38,10 +38,10 @@ class DaftarPoli extends Model
         return $this->belongsTo(Dokter::class, 'id_dokter', 'id');
     }
 
-    public function poli()
-    {
-        return $this->belongsTo(Poli::class, 'id_poli', 'id');
-    }
+    // public function poli()
+    // {
+    //     return $this->belongsTo(Poli::class, 'id_poli', 'id');
+    // }
 
     // Mendapatkan nomor antrian yang direset setiap hari
     protected function getResetNoAntrianDaily()

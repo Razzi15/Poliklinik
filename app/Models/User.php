@@ -31,9 +31,6 @@ class User extends Authenticatable implements FilamentUser
         return $this->is_dokter;
     }
 
-    public function isPasien(): bool{
-        return $this->is_pasien;
-    }
     protected $fillable = [
         'name',
         'email',
