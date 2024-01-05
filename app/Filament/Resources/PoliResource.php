@@ -28,8 +28,8 @@ class PoliResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('nama_poli'),
-                TextInput::make('keterangan'),
+                Forms\Components\TextInput::make('nama_poli')->label('Nama Poli')->required(),
+                Forms\Components\Textarea::make('keterangan')->label('Keterangan')->required(),
             ]);
     }
 
@@ -37,19 +37,23 @@ class PoliResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('nama_poli'),
-                TextColumn::make('keterangan'),
+                Tables\Columns\TextColumn::make('nama_poli'),
+                Tables\Columns\TextColumn::make('keterangan'),
+                Tables\Columns\TextColumn::make('created_at'),
+                Tables\Columns\TextColumn::make('updated_at'),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
+                //Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                //]),
             ]);
     }
 
