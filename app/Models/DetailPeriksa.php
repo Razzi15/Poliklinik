@@ -15,7 +15,7 @@ class DetailPeriksa extends Model
     // Tambahkan jika diperlukan relasi dengan model Periksa
     public function periksa()
     {
-        return $this->belongsTo(MemeriksaPasien::class, 'id_periksa');
+        return $this->belongsTo(Periksa::class, 'id_periksa');
     }
 
     // Tambahkan jika diperlukan relasi dengan model Obat

@@ -115,7 +115,7 @@ class DaftarPoliResource extends Resource
                             'id_daftar_poli' => $record->id,
                             'tgl_periksa' => now(),
                             'catatan' => $data['catatan'],
-                            'biaya_periksa' => 150000
+                            'biaya_periksa' => 172000
                         ]);
                         $periksa->save();
                     })
