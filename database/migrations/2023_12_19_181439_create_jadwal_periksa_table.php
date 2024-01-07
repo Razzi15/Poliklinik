@@ -13,6 +13,7 @@ class CreateJadwalPeriksaTable extends Migration
             $table->enum('hari', ['senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu']);
             $table->time('jam_mulai');
             $table->time('jam_selesai');
+            $table->enum('status', ['aktif', 'tidak']);
             $table->timestamps();
 
             // Definisi kunci asing

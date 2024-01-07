@@ -161,6 +161,10 @@
         .have-account a:hover {
             text-decoration: underline;
         }
+            /* Gaya untuk menambahkan warna merah pada bintang */
+        .required {
+            color: red;
+        }
     </style>
 </head>
 
@@ -179,18 +183,22 @@
                         <form method="POST" action="{{ route('register') }}">
                             @csrf
                             <div class="form-group">
+                            <label for="nik">Nama Lengkap<span class="required">*</span></label>
                                 <input placeholder="Nama lengkap" class="form-control" type="text"
                                     name="fullname" id="fullname" required>
                             </div>
                             <div class="form-group">
+                            <label for="nik">Nomor Induk Keluarga<span class="required">*</span></label>
                                 <input placeholder="NIK" class="form-control" type="text" name="nik" id="nik"
                                     required>
                             </div>
                             <div class="form-group">
+                            <label for="nik">Alamat Lengkap<span class="required">*</span></label>
                                 <input placeholder="Alamat" class="form-control" type="text" name="alamat"
                                     id="alamat" required>
                             </div>
                             <div class="form-group">
+                            <label for="nik">Nomor Handphone<span class="required">*</span></label>
                                 <input placeholder="Nomer Hp" class="form-control" type="text" name="phone"
                                     id="phone" required>
                             </div>

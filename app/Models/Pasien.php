@@ -28,5 +28,9 @@ class Pasien extends Model
             $pasien->no_rm = now()->format('Ym') . '-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
         });
     }
+    public function periksa()
+    {
+        return $this->belongsTo(Periksa::class, 'id_daftar_poli', 'id');
+    }
 }
 

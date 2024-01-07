@@ -6,6 +6,7 @@ use App\Filament\Resources\PasienResource\Pages;
 use App\Filament\Resources\PasienResource\RelationManagers;
 use App\Models\DaftarPoli;
 use App\Models\Pasien;
+use App\Models\Periksa;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -23,29 +24,32 @@ class PasienResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
     protected static ?string $navigationLabel = 'Riwayat Pasien';
+    protected static ?string $label = 'Patient';
+    protected static bool $create = false;
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('nama'),
-                TextInput::make('alamat'),
-                TextInput::make('no_ktp'),
-                TextInput::make('no_hp'),
-                //TextInput::make('no_rm'),
+                Forms\Components\TextInput::make('nama')->label('Nama')->required(),
+                Forms\Components\TextInput::make('alamat')->label('Alamat')->required(),
+                Forms\Components\TextInput::make('no_ktp')->label('Nomor KTP')->required(),
+                Forms\Components\TextInput::make('no_hp')->label('Nomor HP')->required(),
             ]);
     }
 
     public static function table(Table $table): Table
     {
+        $periksa=Periksa::pluck('tgl_periksa','biaya_periksa','id')->toArray();
         return $table
             ->columns([
                 TextColumn::make('nama'),
                 TextColumn::make('alamat'),
                 TextColumn::make('no_ktp'),
-                TextColumn::make('no_hp'),
+                TextColumn::make('no_hp'), 
                 TextColumn::make('no_rm'),
+                TextColumn::make('periksa.tgl_periksa'),
             ])
             ->filters([
                 //
@@ -62,6 +66,9 @@ class PasienResource extends Resource
                                 TextInput::make("keluhan")->label("Keluhan")
                                 ->default($keluhan)
                                 ->readonly(),
+                                TextInput::make("Rp 172.000")->label("Total Biaya")
+                                ->default('Rp 172.000')
+                                ->readonly(),
                         ];
                     })
                     ->hidden(function (Pasien $record) {
@@ -69,9 +76,7 @@ class PasienResource extends Resource
                     }),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 

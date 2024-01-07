@@ -99,7 +99,7 @@
                                 <select class="my-1 form-control" name="jadwal" id="jadwal">
                                     <option value="" selected disabled>Pilih Jadwal</option>
                                     @foreach($jadwalOptions as $jadwal)
-                                    @if($jadwal->hari == 'selasa')
+                                    @if($jadwal->status == 'Y')
                                         <option value="{{ $jadwal->id }}">
                                             Dokter: {{ $jadwal->dokter->nama }}    
                                             - {{ $jadwal->hari }} 

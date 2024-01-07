@@ -16,7 +16,9 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Set;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TimePicker;
+use Filament\Forms\Components\Toggle;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Validation\Rules\Enum;
@@ -45,6 +47,10 @@ class JadwalPeriksaResource extends Resource
                     ->required(),
                 TimePicker::make('jam_mulai')->label('Jam Mulai')->required(),
                 TimePicker::make('jam_selesai')->label('Jam Selesai')->required(),
+                Select::make('status')
+                    ->label('Status Dokter')
+                    ->options(['Y' => 'Aktif', 'T' => 'Tidak Akitf'])
+                    ->required(),
             ]);
     }
 
@@ -64,6 +70,7 @@ class JadwalPeriksaResource extends Resource
                 TextColumn::make('hari'),
                 TextColumn::make('jam_mulai'),
                 TextColumn::make('jam_selesai'),
+                TextColumn::make('status'),
             ])
             ->filters([
                 //
