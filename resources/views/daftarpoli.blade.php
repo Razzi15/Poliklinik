@@ -59,10 +59,6 @@
         .select2-container {
             width: 100% !important;
         }
-        /* Gaya untuk menambahkan warna merah pada bintang */
-        .required {
-            color: red;
-        }
     </style>
 </head>
 
@@ -72,48 +68,28 @@
             <h2 class="nk-block-title fw-normal">Pesan Dokter</h2>
         </div>
         <div class="row justify-content-center">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">Daftar Poli</div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('daftarpolipasien') }}">
-                        @csrf
+                            @csrf
                             <div class="form-group">
-                            <label for="nik">Nomor Rekam Medik<span></span></label>
-                            <input type="hidden" name="pasienId" value="{{ $idPasien }}">
-                                <input value="{{$pasienRm}}" class="my-1 form-control" type="text" name="nik" id="nik"
+                                <input type="hidden" class="mb-2" name="pasienId" value="{{ $idPasien }}">
+                                <input value="{{$pasienRm}}" class="mb-2 form-control" type="text" name="nik" id="nik"
                                     disabled>
-                                <br>
-                                <label for="nik">Pilih Poliklinik<span class="required">*</span></label>
-                                <select class="my-1 form-control" name="jadwal" id="jadwal">
-                                    <option value="" selected disabled>Pilih Poli</option>
+                                <select class="mb-2 form-control" name="jadwal" id="jadwal">
+                                    <option value="" selected disabled>Pilih Jadwal</option>
                                     @foreach($jadwalOptions as $jadwal)
                                     <option value="{{ $jadwal->id }}">
-                                        Poli: {{
+                                        {{ $jadwal->hari }} - {{ $jadwal->jam_mulai }} to {{ $jadwal->jam_selesai }}
+                                        - Dokter: {{ $jadwal->dokter->nama }} - Poli: {{
                                         $jadwal->dokter->poli->nama_poli }}
                                     </option>
                                     @endforeach
                                 </select>
-                                <br><br>
-                                <label for="nik">Pilih Jadwal Dokter<span class="required">*</span></label>
-                                <select class="my-1 form-control" name="jadwal" id="jadwal">
-                                    <option value="" selected disabled>Pilih Jadwal</option>
-                                    @foreach($jadwalOptions as $jadwal)
-                                    @if($jadwal->hari == 'selasa')
-                                        <option value="{{ $jadwal->id }}">
-                                            Dokter: {{ $jadwal->dokter->nama }}    
-                                            - {{ $jadwal->hari }} 
-                                            - {{ $jadwal->jam_mulai }} to {{ $jadwal->jam_selesai }}
-                                            - Poli: {{
-                                            $jadwal->dokter->poli->nama_poli }}
-                                        </option>
-                                        @endif
-                                    @endforeach
-                                </select>
-                                <br>
-                                <label for="nik">Masukkan Keluhan Anda<span class="required">*</span></label>
-                                <textarea class="my-1 form-control" type="text" name="keluhan" id="keluhan"
-                                    placeholder="Keluhan"></textarea><br>
+                                <textarea class="my-2 form-control" type="text" name="keluhan" id="keluhan"
+                                    placeholder="Keluhan"></textarea>
                                 <button type="submit" class="btn btn-primary">Daftar</button>
                             </div>
                         </form>

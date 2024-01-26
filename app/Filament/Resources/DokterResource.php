@@ -1,43 +1,36 @@
 <?php
 
 namespace App\Filament\Resources;
-
 use App\Filament\Resources\DokterResource\Pages;
-use App\Filament\Resources\DokterResource\RelationManagers;
 use App\Models\Dokter;
 use App\Models\Poli;
-use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-
 class DokterResource extends Resource
 {
     protected static ?string $model = Dokter::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-identification';
-
+    //protected static ?string $navigationIcon = 'bi-person-vcard';
     protected static ?string $navigationLabel = 'Dokter';
-
-
+    protected static ?string $label = 'Doctor';
     public static function form(Form $form): Form
     {
+        $polis = Poli::pluck('nama_poli', 'id')->toArray();
 
-        $poli=Poli::pluck('nama_poli','id')->toArray();
         return $form
             ->schema([
-                TextInput::make('nama'),
-                TextInput::make('alamat'),
-                TextInput::make('no_hp'),
+                TextInput::make('nama')->label('Nama')->required(),
+                TextInput::make('alamat')->label('Alamat')->required(),
+                TextInput::make('no_hp')->label('Nomor HP')->required(),
                 Select::make('id_poli')
                     ->label('Poli')
-                    ->options($poli)
+                    ->options($polis)
                     ->required(),
             ]);
     }
@@ -58,9 +51,7 @@ class DokterResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                //Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-             //   ]),
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 

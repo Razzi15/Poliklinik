@@ -8,10 +8,8 @@ use App\Models\Poli;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Forms\Components\TextInput;
-use Filament\Tables\Columns\TextColumn;
+use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -20,10 +18,8 @@ class PoliResource extends Resource
     protected static ?string $model = Poli::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
-
     protected static ?string $navigationLabel = 'Poli';
-
-
+    protected static ?string $label = 'Departement';
     public static function form(Form $form): Form
     {
         return $form
@@ -43,7 +39,7 @@ class PoliResource extends Resource
                 Tables\Columns\TextColumn::make('updated_at'),
             ])
             ->filters([
-                //
+                // Definisi filter jika diperlukan
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -51,16 +47,14 @@ class PoliResource extends Resource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                //Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                //]),
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
     public static function getRelations(): array
     {
         return [
-            //
+            // Definisi relasi jika diperlukan
         ];
     }
 

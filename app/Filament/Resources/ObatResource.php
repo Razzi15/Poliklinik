@@ -9,9 +9,9 @@ use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -21,14 +21,14 @@ class ObatResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-beaker';
     protected static ?string $navigationLabel = 'Obat';
-
+    protected static ?string $label = 'Medicine';
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('nama_obat'),
-                TextInput::make('kemasan'),
-                TextInput::make('harga'),
+                TextInput::make('nama_obat')->label('Nama Obat')->required(),
+                TextInput::make('kemasan')->label('Kemasan')->required(),
+                TextInput::make('harga')->label('Harga')->required(),
             ]);
     }
 
@@ -41,7 +41,7 @@ class ObatResource extends Resource
                 TextColumn::make('harga'),
             ])
             ->filters([
-                //
+                // Definisi filter jika diperlukan
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -49,16 +49,14 @@ class ObatResource extends Resource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                //Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-               // ]),
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
     public static function getRelations(): array
     {
         return [
-            //
+            // Definisi relasi jika diperlukan
         ];
     }
 

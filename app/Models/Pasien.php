@@ -8,8 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Pasien extends Model
 {
     use HasFactory;
-    protected $fillable = ['id', 'nama', 'alamat', 'no_ktp', 'no_hp', 'no_rm'];
-
+    protected $fillable = [
+        'nama',
+        'alamat',
+        'no_ktp',
+        'no_hp'
+    ];
     public static function boot()
     {
         parent::boot();
@@ -28,9 +32,4 @@ class Pasien extends Model
             $pasien->no_rm = now()->format('Ym') . '-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
         });
     }
-    public function periksa()
-    {
-        return $this->belongsTo(Periksa::class, 'id_daftar_poli', 'id');
-    }
 }
-

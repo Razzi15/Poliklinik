@@ -71,7 +71,8 @@ class PasienController extends Controller
     public function daftarpoli(Request $request)
     {
         $idPasien = $request->input('pasienId');
-        $jadwalOptions = JadwalPeriksa::with(['dokter.poli'])
+        $jadwalOptions = JadwalPeriksa::where('is_active',true)
+            ->with(['dokter.poli'])
             ->select(['id', 'hari', 'jam_mulai', 'jam_selesai', 'id_dokter'])
             ->get();
 
