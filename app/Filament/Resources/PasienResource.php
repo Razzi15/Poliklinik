@@ -5,15 +5,20 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PasienResource\Pages;
 use App\Filament\Resources\PasienResource\RelationManagers;
 use App\Models\DaftarPoli;
+use App\Models\DetailPeriksa;
 use App\Models\Pasien;
 use App\Models\Periksa;
+use DateTime;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Forms\Components\TextInput;
-use Filament\Tables\Columns\TextColumn;
+use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -22,34 +27,29 @@ class PasienResource extends Resource
     protected static ?string $model = Pasien::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
-
-    protected static ?string $navigationLabel = 'Riwayat Pasien';
+    protected static ?string $navigationLabel = 'Pasien';
     protected static ?string $label = 'Patient';
     protected static bool $create = false;
     protected static ?int $navigationSort = 3;
-
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nama')->label('Nama')->required(),
-                Forms\Components\TextInput::make('alamat')->label('Alamat')->required(),
-                Forms\Components\TextInput::make('no_ktp')->label('Nomor KTP')->required(),
-                Forms\Components\TextInput::make('no_hp')->label('Nomor HP')->required(),
+            Forms\Components\TextInput::make('nama')->label('Nama')->required(),
+            Forms\Components\TextInput::make('alamat')->label('Alamat')->required(),
+            Forms\Components\TextInput::make('no_ktp')->label('Nomor KTP')->required(),
+            Forms\Components\TextInput::make('no_hp')->label('Nomor HP')->required(),
             ]);
     }
-
     public static function table(Table $table): Table
     {
-        $periksa=Periksa::pluck('tgl_periksa','biaya_periksa','id')->toArray();
         return $table
             ->columns([
-                TextColumn::make('nama'),
-                TextColumn::make('alamat'),
-                TextColumn::make('no_ktp'),
-                TextColumn::make('no_hp'), 
-                TextColumn::make('no_rm'),
-                TextColumn::make('periksa.tgl_periksa'),
+                Tables\Columns\TextColumn::make('nama')->label("Nama"),
+                Tables\Columns\TextColumn::make('alamat')->label("Alamat"),
+                Tables\Columns\TextColumn::make('no_ktp')->label("No KTP"),
+                Tables\Columns\TextColumn::make('no_hp')->label("Telepon"),
+                Tables\Columns\TextColumn::make('no_rm')->label("Nomer Rekam Medis"),
             ])
             ->filters([
                 //
@@ -66,9 +66,6 @@ class PasienResource extends Resource
                                 TextInput::make("keluhan")->label("Keluhan")
                                 ->default($keluhan)
                                 ->readonly(),
-                                TextInput::make("Rp 172.000")->label("Total Biaya")
-                                ->default('Rp 172.000')
-                                ->readonly(),
                         ];
                     })
                     ->hidden(function (Pasien $record) {
@@ -76,7 +73,7 @@ class PasienResource extends Resource
                     }),
             ])
             ->bulkActions([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 

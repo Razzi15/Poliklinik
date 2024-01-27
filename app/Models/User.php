@@ -2,39 +2,43 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Filament\Panel;
 
 class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable;
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return true;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->is_admin;
+    }
+
+    public function isDokter(): bool
+    {
+        return $this->is_dokter;
+    }
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    public function canAccessPanel(\Filament\Panel $panel): bool{
-        return true;
-    }
-
-    public function isAdmin(): bool{
-        return $this->is_admin;
-    }
-
-    public function isDokter(): bool{
-        return $this->is_dokter;
-    }
-
     protected $fillable = [
         'name',
         'email',
         'password',
+        'is_admin',
+        'is_dokter',
+        'id_dokter',
     ];
 
     /**
@@ -56,4 +60,7 @@ class User extends Authenticatable implements FilamentUser
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    public function dokter(){
+        return $this->belongsTo(Dokter::class, 'id_dokter', 'id');
+    }
 }

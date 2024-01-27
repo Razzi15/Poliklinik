@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class DaftarPoli extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'id_pasien', 'id_jadwal', 'keluhan', 'no_antrian', 'created_at',
     ];
@@ -22,26 +24,19 @@ class DaftarPoli extends Model
             $model->no_antrian = $model->getResetNoAntrianDaily();
         });
     }
-
-    public function jadwal()
+    public function jadwalPeriksa()
     {
         return $this->belongsTo(JadwalPeriksa::class, 'id_jadwal', 'id');
-    }
-
-    public function pasien()
-    {
-        return $this->belongsTo(Pasien::class, 'id_pasien', 'id');
     }
 
     public function dokter()
     {
         return $this->belongsTo(Dokter::class, 'id_dokter', 'id');
     }
-
-    // public function poli()
-    // {
-    //     return $this->belongsTo(Poli::class, 'id_poli', 'id');
-    // }
+    public function pasien()
+    {
+        return $this->belongsTo(Pasien::class, 'id_pasien', 'id');
+    }
 
     // Mendapatkan nomor antrian yang direset setiap hari
     protected function getResetNoAntrianDaily()

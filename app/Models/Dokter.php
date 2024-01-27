@@ -8,8 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Dokter extends Model
 {
     use HasFactory;
-    protected $fillable = ['id', 'nama', 'alamat', 'no_hp', 'id_poli'];
+    protected $fillable = [
+        'id',
+        'nama',
+        'alamat',
+        'no_hp',
+        'id_poli',
+    ];
     public function poli(){
-        return $this->belongsTo(Poli::class,'id_poli','id');
+        return $this->belongsTo(Poli::class, 'id_poli', 'id');
     }
 }

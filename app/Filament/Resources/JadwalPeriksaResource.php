@@ -5,55 +5,58 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\JadwalPeriksaResource\Pages;
 use App\Filament\Resources\JadwalPeriksaResource\RelationManagers;
 use App\Models\Dokter;
-use App\Models\Jadwal_Periksa;
 use App\Models\JadwalPeriksa;
+use App\Models\User;
+use Faker\Core\Number;
+use Filament\Facades\Filament;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Table;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Set;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Toggle;
-use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
 use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Table;
+use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Validation\Rules\Enum;
-use PHPUnit\Event\Code\Test;
-
+use Illuminate\Support\Facades\Auth;
+use Filament\Navigation\NavigationItem;
 class JadwalPeriksaResource extends Resource
 {
     protected static ?string $model = JadwalPeriksa::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
     protected static ?string $navigationLabel = 'Jadwal Periksa';
+    protected static ?string $label = 'Schedule';
     protected static ?int $navigationSort = 1;
-
-
     public static function form(Form $form): Form
     {
-        $dokter=Dokter::pluck('nama','id')->toArray();
+        $dokter = Dokter::pluck('nama', 'id')->toArray();
         return $form
             ->schema([
-                Select::make('id_dokter')
-                    ->label('Dokter')
-                    ->options($dokter)
-                    ->required(),
                 Select::make('hari')
                     ->label('Hari')
-                    ->options(['Senin' => 'Senin', 'Selasa' => 'Selasa', 'Rabu' => 'Rabu', 'Kamis' => 'Kamis', 'Jumat' => 'Jumat', 'Sabtu' => 'Sabtu'])
+                    ->options([
+                        'senin' => 'Senin',
+                        'selasa' => 'Selasa',
+                        'rabu' => 'Rabu',
+                        'kamis' => 'Kamis',
+                        'jumat' => 'Jumat',
+                        'sabtu' => 'Sabtu',
+                    ])
                     ->required(),
-                TimePicker::make('jam_mulai')->label('Jam Mulai')->required(),
-                TimePicker::make('jam_selesai')->label('Jam Selesai')->required(),
-                Select::make('status')
-                    ->label('Status Dokter')
-                    ->options(['Y' => 'Aktif', 'T' => 'Tidak Akitf'])
+                TimePicker::make('jam_mulai')
+                    ->label('Jam Mulai')
+                    ->required(),
+                TimePicker::make('jam_selesai')
+                    ->label('Jam Selesai')
                     ->required(),
             ]);
     }
-
     public static function getIdDokter(): int
     {
         $data = auth()->user();
@@ -70,7 +73,7 @@ class JadwalPeriksaResource extends Resource
                 TextColumn::make('hari'),
                 TextColumn::make('jam_mulai'),
                 TextColumn::make('jam_selesai'),
-                TextColumn::make('status'),
+                ToggleColumn::make('is_active')->label('Status Jadwal')
             ])
             ->filters([
                 //
@@ -79,12 +82,11 @@ class JadwalPeriksaResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
+        }
     }
-}
+
 
     public static function getRelations(): array
     {

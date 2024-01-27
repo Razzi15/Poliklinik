@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 07 Jan 2024 pada 12.17
+-- Waktu pembuatan: 26 Jan 2024 pada 19.56
 -- Versi server: 10.4.27-MariaDB
 -- Versi PHP: 8.2.0
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `laravel1`
+-- Database: `poliklinik`
 --
 
 -- --------------------------------------------------------
@@ -42,8 +42,7 @@ CREATE TABLE `daftar_polis` (
 --
 
 INSERT INTO `daftar_polis` (`id`, `id_pasien`, `id_jadwal`, `keluhan`, `no_antrian`, `created_at`, `updated_at`) VALUES
-(2, 4, 1, 'Sakit kepala', 1, '2024-01-07 03:18:43', '2024-01-07 03:18:43'),
-(6, 5, 1, 'Sakit Kepala', 2, '2024-01-07 03:50:12', '2024-01-07 03:50:12');
+(40, 15, 14, 'Sakit Kepala', 1, '2024-01-26 10:06:13', '2024-01-26 10:06:13');
 
 -- --------------------------------------------------------
 
@@ -80,8 +79,8 @@ CREATE TABLE `dokters` (
 --
 
 INSERT INTO `dokters` (`id`, `nama`, `alamat`, `no_hp`, `id_poli`, `created_at`, `updated_at`) VALUES
-(1, 'Dr.Razzi', 'Jl Imam Bonjol No 34', 8236724628, 1, '2023-12-27 00:08:50', '2023-12-27 00:08:50'),
-(2, 'Dr. Angga', 'Jalan Ngaliyan', 876543219, 1, '2024-01-07 03:54:34', '2024-01-07 03:54:34');
+(4, 'Razzi', 'Jalan Imam Bonjol No. 207 & Jalan Nakula I No. 5 - 11 ', 81212016723, 3, '2024-01-26 09:57:04', '2024-01-26 09:57:04'),
+(5, 'Angga', 'Jalan Ungaran', 89372973329, 1, '2024-01-26 10:53:17', '2024-01-26 10:53:17');
 
 -- --------------------------------------------------------
 
@@ -111,7 +110,7 @@ CREATE TABLE `jadwal_periksas` (
   `hari` enum('senin','selasa','rabu','kamis','jumat','sabtu') NOT NULL,
   `jam_mulai` time NOT NULL,
   `jam_selesai` time NOT NULL,
-  `status` char(1) NOT NULL,
+  `is_active` tinyint(1) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -120,10 +119,11 @@ CREATE TABLE `jadwal_periksas` (
 -- Dumping data untuk tabel `jadwal_periksas`
 --
 
-INSERT INTO `jadwal_periksas` (`id`, `id_dokter`, `hari`, `jam_mulai`, `jam_selesai`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 'selasa', '09:00:30', '14:09:48', 'Y', '2023-12-27 00:09:53', '2024-01-07 03:42:36'),
-(2, 1, 'jumat', '09:47:36', '15:47:46', 'T', '2024-01-06 01:47:53', '2024-01-07 03:42:52'),
-(3, 1, 'rabu', '06:02:29', '10:02:38', 'T', '2024-01-07 04:02:51', '2024-01-07 04:02:51');
+INSERT INTO `jadwal_periksas` (`id`, `id_dokter`, `hari`, `jam_mulai`, `jam_selesai`, `is_active`, `created_at`, `updated_at`) VALUES
+(12, 4, 'kamis', '08:00:00', '12:00:00', 0, '2024-01-26 09:59:58', '2024-01-26 10:02:22'),
+(13, 4, 'jumat', '08:00:00', '12:00:00', 0, '2024-01-26 10:01:05', '2024-01-26 10:02:30'),
+(14, 4, 'rabu', '12:00:00', '17:30:00', 0, '2024-01-26 10:01:58', '2024-01-26 10:22:57'),
+(15, 4, 'selasa', '19:22:37', '22:22:50', 1, '2024-01-26 10:22:57', '2024-01-26 10:22:57');
 
 -- --------------------------------------------------------
 
@@ -175,9 +175,7 @@ CREATE TABLE `obats` (
 --
 
 INSERT INTO `obats` (`id`, `nama_obat`, `kemasan`, `harga`, `created_at`, `updated_at`) VALUES
-(1, 'Paramex', 'Tablet', 10000, '2023-12-27 00:07:43', '2023-12-27 00:08:03'),
-(2, 'Paracetamol', 'Tablet', 12000, '2023-12-27 00:08:22', '2023-12-27 00:08:22'),
-(3, 'Bodrex', 'Tablet', 22000, '2024-01-07 03:55:02', '2024-01-07 03:55:02');
+(1, 'Demacolin', 'Tablet', 5000, '2023-12-26 19:54:35', '2023-12-26 19:54:35');
 
 -- --------------------------------------------------------
 
@@ -191,7 +189,7 @@ CREATE TABLE `pasiens` (
   `alamat` varchar(255) NOT NULL,
   `no_ktp` varchar(255) NOT NULL,
   `no_hp` varchar(255) NOT NULL,
-  `no_rm` varchar(255) DEFAULT NULL,
+  `no_rm` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -201,8 +199,7 @@ CREATE TABLE `pasiens` (
 --
 
 INSERT INTO `pasiens` (`id`, `nama`, `alamat`, `no_ktp`, `no_hp`, `no_rm`, `created_at`, `updated_at`) VALUES
-(4, 'Razzi Wahyudi', 'Jalan Gergaji Klopo NO 37', '2754738929320', '08123456789', '202401-001', '2024-01-07 03:18:16', '2024-01-07 03:18:16'),
-(5, 'Wahyudi', 'Jalan Imam Bonjol', '27836363723', '0876482842222', '202401-002', '2024-01-07 03:49:22', '2024-01-07 03:49:22');
+(15, 'Wahyudi', 'Jl.Gergaji Klopo No.37, Kota Semarang', '21773862839892', '081212016723', '202401-006', '2024-01-26 10:05:59', '2024-01-26 10:05:59');
 
 -- --------------------------------------------------------
 
@@ -237,8 +234,7 @@ CREATE TABLE `periksas` (
 --
 
 INSERT INTO `periksas` (`id`, `id_daftar_poli`, `tgl_periksa`, `catatan`, `biaya_periksa`, `created_at`, `updated_at`) VALUES
-(2, 2, '2024-01-07', 'Pasien Kurang Darah', 172000, '2024-01-07 03:21:05', '2024-01-07 03:21:05'),
-(3, 6, '2024-01-07', 'Pasien Kurang Tidur', 172000, '2024-01-07 04:04:23', '2024-01-07 04:04:23');
+(6, 40, '2024-01-26', 'Pasien Kurang Tidur, sehingga mengamali anemia', 155000, '2024-01-26 10:10:59', '2024-01-26 10:10:59');
 
 -- --------------------------------------------------------
 
@@ -278,7 +274,8 @@ CREATE TABLE `polis` (
 --
 
 INSERT INTO `polis` (`id`, `nama_poli`, `keterangan`, `created_at`, `updated_at`) VALUES
-(1, 'Poliklinik Udinus', 'Poliklinik Mahasiswa, Alumni, Staff Udinus, dan Umum', '2023-12-27 00:07:11', '2023-12-27 00:07:11');
+(1, 'Anak', 'Dokter pengecekan anak', '2023-12-26 12:30:26', '2023-12-26 12:30:26'),
+(3, 'Jantung', 'Spesialis penyakit jantung', '2024-01-04 20:49:26', '2024-01-04 20:49:26');
 
 -- --------------------------------------------------------
 
@@ -292,21 +289,21 @@ CREATE TABLE `users` (
   `email` varchar(255) NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
+  `is_admin` tinyint(1) DEFAULT NULL,
+  `is_dokter` tinyint(1) DEFAULT NULL,
+  `id_dokter` bigint(20) UNSIGNED DEFAULT NULL,
   `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `is_admin` int(1) NOT NULL,
-  `is_dokter` int(1) NOT NULL,
-  `id_dokter` int(1) NOT NULL
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data untuk tabel `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `is_admin`, `is_dokter`, `id_dokter`) VALUES
-(1, 'admin', 'admin@admin.com', NULL, '$2y$12$kJbFfgU/kPVP1Qwa7Oz7qet9iuweOZXjlTwgs8URL/uYufwt8tBO2', NULL, '2023-12-27 00:00:38', '2023-12-27 00:00:38', 1, 0, 0),
-(2, 'Dr.Razzi', 'razzi@dokter.com', NULL, '$2y$12$kJbFfgU/kPVP1Qwa7Oz7qet9iuweOZXjlTwgs8URL/uYufwt8tBO2', NULL, '2023-12-27 00:00:38', '2023-12-27 00:00:38', 0, 1, 1);
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `is_admin`, `is_dokter`, `id_dokter`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'ADMIN', 'admin@admin.com', NULL, '$2y$12$EJSDWReEi7MhuQeisEju1Of.PmP7/BN3ablY9DgAwpB4B.TXgAwGe', 1, 0, NULL, NULL, '2023-12-19 11:34:53', '2023-12-19 11:34:53'),
+(6, 'Razzi', 'razzi@dokter.com', NULL, '$2y$12$8/lAFdHJI4OMan3Nr0tjk.aO7KmY7yyYTRGrG26zZ.tmKZsLp79QC', 0, 1, 4, NULL, '2024-01-26 09:57:41', '2024-01-26 09:57:41');
 
 --
 -- Indexes for dumped tables
@@ -365,8 +362,7 @@ ALTER TABLE `obats`
 -- Indeks untuk tabel `pasiens`
 --
 ALTER TABLE `pasiens`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `pasiens_no_rm_unique` (`no_rm`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indeks untuk tabel `password_reset_tokens`
@@ -400,7 +396,8 @@ ALTER TABLE `polis`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_email_unique` (`email`);
+  ADD UNIQUE KEY `users_email_unique` (`email`),
+  ADD KEY `users_id_dokter_foreign` (`id_dokter`);
 
 --
 -- AUTO_INCREMENT untuk tabel yang dibuang
@@ -410,7 +407,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `daftar_polis`
 --
 ALTER TABLE `daftar_polis`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT untuk tabel `detail_periksas`
@@ -422,7 +419,7 @@ ALTER TABLE `detail_periksas`
 -- AUTO_INCREMENT untuk tabel `dokters`
 --
 ALTER TABLE `dokters`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `failed_jobs`
@@ -434,7 +431,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT untuk tabel `jadwal_periksas`
 --
 ALTER TABLE `jadwal_periksas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT untuk tabel `migrations`
@@ -446,19 +443,19 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT untuk tabel `obats`
 --
 ALTER TABLE `obats`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `pasiens`
 --
 ALTER TABLE `pasiens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT untuk tabel `periksas`
 --
 ALTER TABLE `periksas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT untuk tabel `personal_access_tokens`
@@ -470,13 +467,13 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT untuk tabel `polis`
 --
 ALTER TABLE `polis`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
@@ -513,6 +510,12 @@ ALTER TABLE `jadwal_periksas`
 --
 ALTER TABLE `periksas`
   ADD CONSTRAINT `periksas_id_daftar_poli_foreign` FOREIGN KEY (`id_daftar_poli`) REFERENCES `daftar_polis` (`id`) ON DELETE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_id_dokter_foreign` FOREIGN KEY (`id_dokter`) REFERENCES `dokters` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
