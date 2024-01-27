@@ -1,0 +1,13 @@
+php artisan make:model name
+php artisan filament:resource nameResource
+php artisan make:policy namePolicy --model=name
+php artisan make:controller name
+
+
+
+git status
+git add .
+git status
+git commit -m "name"
+git status
+git push origin namebranch
